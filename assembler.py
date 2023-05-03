@@ -68,7 +68,9 @@ def je(s):
 #type-f Arpan:
 def hlt(s):
     pass
-
+#mov ->calls mov for type B and type C i.e movB and movC
+def mov(s):
+    pass
 opcodes = {
     "add":{add,"00000"},"sub":{sub,"00001"},"mov":{mov,"00010","00011"},#move register
     "ld":{ld,"00100"},"st":{st,"00101"},"mul":{mul,"00110"},"div":{div,"00111"},"rs":{rs,"01000"},
@@ -76,9 +78,26 @@ opcodes = {
     "cmp":{cmp,"01110"},"jmp":{jmp,"01111"},"jlt":{jlt,"11100"},"jgt":{jgt,"11101"},"je":{je,"11111"},
     "hlt":{hlt,"11010"},
 }
-for i in range(128):
-    s=input().strip()
-    while s=='' or s=='\n':
-        s=input().strip()
-    s=s.split()
+file=open("input.txt",'r')
+lines=file.read().split('\n')
+cnt=0
+final_code=[]
+for line in lines:
+    s=line.strip()
+    if(s=='' or s=='\n'):
+        continue
+    
+    final_code.append(s)
+    if(s=='hlt'):
+        break
+    if(len(s)==128):
+     break
+print(final_code)
+
+
+# for i in range(128):
+#     s=input().strip()
+#     while s=='' or s=='\n':
+#         s=input().strip()
+#     s=s.split()
     

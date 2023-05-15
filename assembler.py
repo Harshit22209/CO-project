@@ -29,7 +29,7 @@ codes = {
     "hlt":"11010",
 }
 def checkl(lst,l):
-    print(lst)
+    # print(lst)
     if(len(lst)!=l):
         print(s)
         raise Exception("Syntax Error")
@@ -125,7 +125,7 @@ def div(s):
     printc(s)
 
 def movC(s):
-    print(s)
+    # print(s)
     checkl(s,3)
     # print(s[0])
     registers[s[1]][1]=registers[s[2]][1]
@@ -140,7 +140,7 @@ def Not(s):
 
 def cmp(s):
     checkl(s,3)
-    print(s[0])
+    # print(s[0])
     if(registers[s[1]][1]>registers[s[2]][1]):
         registers["FLAGS"][1]=10
     if(registers[s[1]][1]==registers[s[2]][1]):
@@ -200,15 +200,15 @@ def check_jump(s):
 #type E:Arpan
 def jmp(s):
     check_jump(s)
+    temp=0
+    if (len(memory_for_labels[s[1]])<7):
+        temp=7-len(memory_for_labels[s[1]])
+    print("01111"+"0000"+"0"*temp + memory_for_labels[s[1]])
     for i in range(len(lines)):
         if(lines[i][0]==s[1]):
             # print(s[0])
-            temp=0
-            if (len(memory_for_labels[s[1]])<7):
-                temp=7-len(memory_for_labels[s[1]])
-            print("01111"+"0000"+"0"*temp + memory_for_labels[s[1]])
             return i
-        
+
 def jlt(s):
     check_jump(s)
     #PRINTING
@@ -228,18 +228,16 @@ def jlt(s):
 
 def jgt(s):
     check_jump(s)
-    
-    
     temp=0
     if (len(memory_for_labels[s[1]])<7):
         temp=7-len(memory_for_labels[s[1]])
     print("11101"+"0000"+"0"*temp + memory_for_labels[s[1]])
     
-    
+
     if(registers["FLAGS"][1]==10):
         for i in range(len(lines)):
             if(lines[i][0]==s[1]):
-                print(s[0])
+                # print(s[0])
                 return i
         # print(s[0])
     else:
@@ -391,17 +389,31 @@ for i in labels:
 # print(addr_variables)
 # for i in variables:
 #     printf("")
+
+print(final_code)
 for i in range(len(final_code)):
+    
     inst=final_code[i][0]
+    # print(inst)
+    # print("->",inst)
+    # print(inst[0])
     cmds=final_code[i]
+    # print(inst[:-1])
+    # print(lines)
+    if(lines.index("hlt")<len(lines)-1):
+        raise Exception("No instructuins after halt")
     if inst in opcodes:
         opcodes[inst][0](cmds)
+    elif final_code[i][-1] == "hlt":
+        hlt(inst)
+    elif ':' in final_code[i][0]:
+        opcodes[final_code[i][1]][0](cmds[1:])
+        
     elif inst[:-1] in labels:
         continue
     else:
-        # print()
         raise Exception("Invalid Syntax")
-   
+    # if final_code[i]
 
 # providing addr to hlt and var
 

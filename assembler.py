@@ -1,4 +1,11 @@
 import sys
+outpt=[]
+def write(s):
+    # while(s[-1]=='\n'):
+    #     s=s[:-1]
+    print(s)
+    
+    # print(s)
 
 registers = {
     "R0":["000",0],"R1":["001",0],"R2":["010",0],
@@ -31,18 +38,18 @@ codes = {
 def checkl(lst,l):
     # print(lst)
     if(len(lst)!=l):
-        print(s)
+        # print(s)
         raise Exception("Syntax Error")
     if(lst[1] not in registers or lst[2] not in registers):
         raise Exception("Invalid reg name")
 # Type A:Harshit 
 def A(op,R1,R2,R3):#op-5 u-2 r1-3,r2-3,r3-3
-    print(op+"00"+R1+R2+R3)
+    write(op+"00"+R1+R2+R3)
 
 def checkA(s):
     
     if(len(s)!=4):
-        print(s)
+        # print(s)
         raise Exception("Syntax Error")
    
     if(s[1] not in registers or s[2] not in registers or s[3] not in registers):
@@ -91,7 +98,7 @@ def checkB(lst):
 def printb(s):
    
    a=bin((int(s[2].lstrip("$"))))[2:]
-   print(codes[s[0]]+"0"+registers[s[1]][0]+"0"*(7-len(a))+a)
+   write(codes[s[0]]+"0"+registers[s[1]][0]+"0"*(7-len(a))+a)
     # printb(s)
 
 def movB(s):
@@ -99,7 +106,7 @@ def movB(s):
     # print(s[0])
     registers[s[1]][1]=int((s[2]).lstrip("$"))
     a=bin((int(s[2].lstrip("$"))))[2:]
-    print(codes[s[0]][0]+"0"+registers[s[1]][0]+"0"*(7-len(a))+a)
+    write(codes[s[0]][0]+"0"+registers[s[1]][0]+"0"*(7-len(a))+a)
     # printb(s)
 
 def rs(s):
@@ -116,7 +123,7 @@ def ls(s):
 #type C:Dev Utkarsh
 #type C:Dev Utkarsh
 def printc(s):
-    print(codes[s[0]]+"00000"+registers[s[1]][0]+registers[s[2]][0])
+    write(codes[s[0]]+"00000"+registers[s[1]][0]+registers[s[2]][0])
 
 def div(s):
     checkl(s,3)
@@ -129,7 +136,7 @@ def movC(s):
     checkl(s,3)
     # print(s[0])
     registers[s[1]][1]=registers[s[2]][1]
-    print(codes[s[0]][1]+"00000"+registers[s[1]][0]+registers[s[2]][0])
+    write(codes[s[0]][1]+"00000"+registers[s[1]][0]+registers[s[2]][0])
 
 
 def Not(s):
@@ -153,12 +160,12 @@ def cmp(s):
 def checkD(lst,l):
     # print(lst)
     if(len(lst)!=l):
-        print(s)
+        # print(s)
         raise Exception("Syntax Error")
     if(lst[1] not in registers or lst[2] not in addr_variables):
         raise Exception("Invalid reg name or variable name")
 def printd(s):
-    print(codes[s[0]]+"0"+registers[s[1]][0]+("0"*(7-len(addr_variables[s[2]][0])))+addr_variables[s[2]][0])
+    write(codes[s[0]]+"0"+registers[s[1]][0]+("0"*(7-len(addr_variables[s[2]][0])))+addr_variables[s[2]][0])
 
 def ld(s):
     checkD(s,3)
@@ -180,10 +187,10 @@ def print_jump():
 
 def check_jump(s):
     if(len(s)<2):
-        print(s)
+        # print(s)
         raise Exception("Syntax Error, less operands")
     elif(len(s)>2):
-        print(s)
+        # print(s)
         raise Exception("Syntax Error, more operands")
     flag=0
     for i in range(len(lines)):
@@ -203,7 +210,7 @@ def jmp(s):
     temp=0
     if (len(memory_for_labels[s[1]])<7):
         temp=7-len(memory_for_labels[s[1]])
-    print("01111"+"0000"+"0"*temp + memory_for_labels[s[1]])
+    write("01111"+"0000"+"0"*temp + memory_for_labels[s[1]])
     for i in range(len(lines)):
         if(lines[i][0]==s[1]):
             # print(s[0])
@@ -215,7 +222,7 @@ def jlt(s):
     temp=0
     if (len(memory_for_labels[s[1]])<7):
         temp=7-len(memory_for_labels[s[1]])
-    print("11100"+"0000"+"0"*temp + memory_for_labels[s[1]])
+    write("11100"+"0000"+"0"*temp + memory_for_labels[s[1]])
     
     if(registers["FLAGS"][1]==100):
         for i in range(len(lines)):
@@ -231,7 +238,7 @@ def jgt(s):
     temp=0
     if (len(memory_for_labels[s[1]])<7):
         temp=7-len(memory_for_labels[s[1]])
-    print("11101"+"0000"+"0"*temp + memory_for_labels[s[1]])
+    write("11101"+"0000"+"0"*temp + memory_for_labels[s[1]])
     
 
     if(registers["FLAGS"][1]==10):
@@ -249,13 +256,13 @@ def je(s):
     temp=0
     if (len(memory_for_labels[s[1]])<7):
         temp=7-len(memory_for_labels[s[1]])
-    print("11111"+"0000"+"0"*temp + memory_for_labels[s[1]])
+    write("11111"+"0000"+"0"*temp + memory_for_labels[s[1]])
 
 
     if(registers["FLAGS"][1]==1):
         for i in range(len(lines)):
             if(lines[i][0]==s[1]):
-                print(s[0])
+                # print(s[0])
                 return i
         # print(s[0])
     else:
@@ -267,7 +274,7 @@ def je(s):
 #type-f Arpan:
 def hlt(s):
     # printing
-    print("11010"+"00000000000")
+    write("11010"+"00000000000")
     sys.exit()
     # print()
 
@@ -293,8 +300,9 @@ opcodes = {
     "hlt":[hlt,"11010"],
 }
 
-file=open("input.txt",'r')
-lines=file.read().split('\n')
+# file=open("CO_A_P1/Simple-Assembler/input.txt",'r')
+# lines=file.readlines()
+lines=sys.stdin.readlines()
 cnt=0
 final_code=[]
 variables=[]
@@ -303,9 +311,19 @@ f=0
 instruction_address=[]
 variable_idx=[]
 return_address=0
+# for line in sys.stdin:
+#     line=line.rstrip()
+#     lines.append(line)
+for i in range(len(lines)):
+    if(lines[i][-1]=='\n'):
+        lines[i]=lines[i][:-1]
 for line in lines:
     cnt+=1
     # print("line->",line)
+    # line=line.rstrip()
+    # lines.append(line)
+    if(line[-1]=='\n'):
+        line=line[:-1]
     s=line.strip()
     if(s=='' or s=='\n'):
         continue
@@ -347,7 +365,7 @@ for line in lines:
 # print("printing labels!!!!!!!!")
 # print(labels)
 #assign address to variables using dictionary addr_variables declared at top
-
+# print(lines)
 memory_for_instructions=[]
 last="0000000"
 la=0
@@ -390,7 +408,7 @@ for i in labels:
 # for i in variables:
 #     printf("")
 
-print(final_code)
+# print(final_code)
 for i in range(len(final_code)):
     
     inst=final_code[i][0]
@@ -400,8 +418,8 @@ for i in range(len(final_code)):
     cmds=final_code[i]
     # print(inst[:-1])
     # print(lines)
-    if(lines.index("hlt")<len(lines)-1):
-        raise Exception("No instructuins after halt")
+    # if(lines.index("hlt")<len(lines)-1):
+    #     raise Exception("No instructuins after halt")
     if inst in opcodes:
         opcodes[inst][0](cmds)
     elif final_code[i][-1] == "hlt":
@@ -413,8 +431,17 @@ for i in range(len(final_code)):
         continue
     else:
         raise Exception("Invalid Syntax")
-    # if final_code[i]
-
+  # if final_code[i]
+# printf("done")
+# f=open("out.txt",'a')
+# f.writelines(outpt)
+# f.close()
+print(len(outpt))
+# for i in range(len(outpt)-1):
+    
+#     print(outpt[i])
+# print(outpt[-1],end='')
+# sys.stdout.writelines(outpt)
 # providing addr to hlt and var
 
 # for i in range(128):
